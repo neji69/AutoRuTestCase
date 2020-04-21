@@ -10,4 +10,5 @@ import io.cucumber.testng.CucumberOptions;
         glue = {"com.github.neji69.cucumber.stepdefs"}
 )
 
-public class CucumberRunnerTest extends AbstractTestNGCucumberTests {}
+public class CucumberRunnerTest extends AbstractTestNGCucumberTests {
+}

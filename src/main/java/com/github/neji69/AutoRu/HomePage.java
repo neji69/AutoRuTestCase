@@ -11,20 +11,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class HomePage {
 
     private static String ADRESS = "https://auto.ru";
+    private ElementsCollection marks = $$x("//div[@class= 'IndexMarks__col']//a"); // Коллекция из представленных на странице марок автомобилей
 
-    private int carAmount;
+    private static int carAmount;
 
-    private SelenideElement tabMenu;
-    private ElementsCollection tabSubMenu;
-    private ElementsCollection marks = $$x("//div[@class= 'IndexMarks__col']//a");
-
-    public void openPage(String url) {
-        open(url, HomePage.class);
+    public static int getCarAmount() {
+        return carAmount;
     }
 
-
-    public int getCarAmount() {
-        return carAmount;
+    /**
+     * Метод открывает сайт по переданной ссылке
+     */
+    public void openPage(String url) {
+        open(url, HomePage.class);
     }
 
     /**
@@ -36,6 +35,9 @@ public class HomePage {
                 .contains(title);
     }
 
+    /**
+     * Метод закрывает всплывающее окно при входе на сайт
+     */
     public void closePopUp() {
         SelenideElement modal = $(".Modal_visible .Modal__closer");
         if (modal.isDisplayed()) {
@@ -43,24 +45,21 @@ public class HomePage {
         }
     }
 
+    /**
+     * Метод сохраняет количество обьявлений по передоному названию марки автомобиля и кликает по ней
+     */
     public void parseAmountCars(String putNameCarFabric) {
 
-        List<String> testMarks = marks.texts();
+        List<String> testMarks = marks.texts(); //Передаем в лист по каждой марке текст в формате "markCar\nValue" Пример: "Honda\n1845"
         for (int i = 0; i < testMarks.size(); i++) {
             if (testMarks.get(i).contains(putNameCarFabric)) {
 
-                String symbolAndAmount = testMarks.get(i).substring(testMarks.get(i).indexOf('\n'));
-                String onlyAmount = symbolAndAmount.replace("\n", "");
-                carAmount = Integer.parseInt(onlyAmount);
-                marks.get(i).click();
+                String symbolAndAmount = testMarks.get(i).substring(testMarks.get(i).indexOf('\n')); //избавляемся от markCar. Остаеться "\nValue". Пример: "\n1845"
+                String onlyAmount = symbolAndAmount.replace("\n", ""); //Избавляемся от \n. Остается "Value". Пример "1845"(String формат)
+                carAmount = Integer.parseInt(onlyAmount); //Парсим текс в число.
+                marks.get(i).click(); //Переходим на страницу выбранной марки
                 break;
             }
         }
-    }
-
-
-
-    public void sort() {
-
     }
 }

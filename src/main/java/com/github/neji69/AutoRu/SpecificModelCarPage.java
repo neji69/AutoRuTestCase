@@ -7,13 +7,12 @@ import static com.codeborne.selenide.Selenide.$x;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SpecificModelCarPage {
+    private int modelCarAmount;
 
-    int modelCarAmount;
-
-
-
-    public void parseAmountCarModelsStepTwo(){
-
+    /**
+     * Метод парсит количество обьявлений с кнопки "Показать ... предложений".
+     */
+    public void parseAmountCarModelsStepTwo() {
         Pattern pattern = Pattern.compile("\\d+");
         String symbolAndAmount = $x("//span[contains(text(),'Показать')]").getText();
         symbolAndAmount = symbolAndAmount.replace(" ", "");// Убираем пробелы в строке
@@ -26,8 +25,11 @@ public class SpecificModelCarPage {
         }
     }
 
-    public void compareTheNumberOfCars(int previousPageModelCarAmount){
-        assertThat ( previousPageModelCarAmount )
+    /**
+     * Метод сравнивает количество обьявлений полученных с предыдущей страницы с количеством полученных на этой
+     */
+    public void compareTheNumberOfCars(int previousPageModelCarAmount) {
+        assertThat(previousPageModelCarAmount)
                 .as("Сравниваем количество машин на этой странице с предыдущей")
                 .isEqualTo(modelCarAmount);
     }
